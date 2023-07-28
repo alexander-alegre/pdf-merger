@@ -1,24 +1,26 @@
 import os
-from PyPDF2 import PdfFileMerger
+from PyPDF2 import PdfMerger
 
 
-start_path = os.getcwd() + "/start"
-end_path = os.getcwd() + "/end"
+start_path = os.path.join(os.getcwd(), "start")
+end_path = os.path.join(os.getcwd(), "end")
 
 
 def process_files(pdf_files):
-    merger = PdfFileMerger()
+    merger = PdfMerger()
     for file in os.listdir(pdf_files):
         if file.endswith(".pdf"):
-            merger.append(start_path + "/" + file)
+            pdf_path = os.path.join(start_path, file)
+            merger.append(pdf_path)
 
-    merger.write(end_path + '/results.pdf')
-    merger.close()
+    output_path = os.path.join(end_path, "results.pdf")
+    with open(output_path, "wb") as output_file:
+        merger.write(output_file)
 
 
 def init():
     base_dir = os.getcwd()
-    process_files(base_dir + '/start')
+    process_files(os.path.join(base_dir, "start"))
 
 
 init()
